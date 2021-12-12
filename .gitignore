@@ -1,0 +1,5 @@
+*.o
+Chess.old
+Corrected-Chess-2.kdev4
+.status
+.directory
