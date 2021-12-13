@@ -190,7 +190,6 @@ int parseArgs(int argc, char* argv[])
                             play_once += (argv[i][j] - '0');
                             j++;
                         }
-                        std::cout << "On joue " << (int) play_once << " fois" << std::endl;
                         i++;
                     }
                     else
