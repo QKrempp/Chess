@@ -84,6 +84,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
     int alpha = -10000;
     int beta = 10000;
     for(byte i = 0; i < 64; i++){
+        std::cout << (int) i << "/64" << std::endl;
         byte p = b->getPiece(i);
         if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
         {

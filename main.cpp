@@ -156,7 +156,6 @@ int parseArgs(Board* b, Arbitre* a, int argc, char* argv[])
                     }
                     else
                     {
-                        std::cout << "On ne joue qu'une fois" << std::endl;
                         play_once = 1;
                     }
                     break;

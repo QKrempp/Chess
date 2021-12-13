@@ -80,6 +80,7 @@ def callback(event):
             create_moves()
             draw_board()
             draw_pieces()
+            root.update()
             subprocess.run(["./Chess.xpp", "-i", "-s", "-b", "-m"])
             create_pieces()
             create_moves()
@@ -91,6 +92,10 @@ def callback(event):
             draw_pieces()
             selected = 0
 
+f = open("game.txt", "w")
+f.write("")
+f.close()
+subprocess.run(["./Chess.xpp", "-u"])
 reset_color()
 draw_board()
 create_pieces()
