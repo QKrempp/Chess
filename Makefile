@@ -1,12 +1,13 @@
 CXX = g++
 C = gcc
 CFLAGS = -W -Wall -ansi -pedantic -std=c++11
+CXXFLAGS = -O2 -W -Wall -ansi -pedantic -std=c++11
 LDFLAGS =
-BIN=./src/
+SRC=./src/
 EXEC = Chess.xpp
-SRC= $(BIN)Arbitre.cpp $(BIN)Player.cpp $(BIN)Board.cpp $(BIN)main.cpp
-DEPS= $(BIN)Board.hpp $(BIN)Arbitre.hpp $(BIN)Player.hpp
-OBJ= $(SRC:.cpp=.o)
+CPPFILES= $(SRC)Arbitre.cpp $(SRC)Player.cpp $(SRC)Board.cpp $(SRC)main.cpp
+DEPS= $(SRC)Board.hpp $(SRC)Arbitre.hpp $(SRC)Player.hpp
+OBJ= $(CPPFILES:.cpp=.o)
 
 # $@	Le nom de la cible
 # $<	Le nom de la première dépendance
@@ -19,16 +20,16 @@ all : $(EXEC)
 Chess.xpp : $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-$(BIN)main.o : $(BIN)Arbitre.hpp $(BIN)Player.hpp $(BIN)Board.hpp
+$(SRC)main.o : $(SRC)Arbitre.hpp $(SRC)Player.hpp $(SRC)Board.hpp
 
-$(BIN)%.o: $(BIN)%.cpp $(DEPS)
-	$(CXX) -o $@ -c $< $(CFLAGS)
+$(SRC)%.o: $(SRC)%.cpp $(DEPS)
+	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
-$(BIN)%.o: $(BIN)%.c
-	$(C) -o $@ -c $< $(CFLAGS)
+$(SRC)%.o: $(SRC)%.c
+	$(C) -o $@ -c $< $(CXXFLAGS)
 
 clean:
-	rm -rf $(BIN)*.o
+	rm -rf $(SRC)*.o
 
 mrproper: clean
 	rm -rf Chess.xpp
