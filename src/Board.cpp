@@ -78,14 +78,14 @@ byte Board::getColor(byte c)
     return pieces[c] >> 3;
 }
 
-unsigned long Board::getThreats(byte c, byte color)
+uint64_t Board::getThreats(byte c, byte color)
 {
     return threats[color][c];
 }
 
-unsigned long Board::getAltThreats(byte c, byte color)
+uint64_t Board::getAltThreats(byte c, byte color)
 {
-    unsigned long altThreats = 0ul;
+    uint64_t altThreats = 0ul;
     for(byte i = 0; i < 64; i ++)
     {
         altThreats |= ((threats[color][i] >> c) & 1) << i;
@@ -93,14 +93,14 @@ unsigned long Board::getAltThreats(byte c, byte color)
     return altThreats;
 }
 
-unsigned long Board::getMoves(byte c, byte color)
+uint64_t Board::getMoves(byte c, byte color)
 {
     return moves[color][c];
 }
 
-unsigned long Board::getAltMoves(byte c, byte color)
+uint64_t Board::getAltMoves(byte c, byte color)
 {
-    unsigned long altMoves = 0ul;
+    uint64_t altMoves = 0ul;
     for(byte i = 0; i < 64; i++)
     {
         altMoves |= ((moves[color][i] >> c) & 1) << i;
@@ -128,7 +128,7 @@ byte Board::getTurn()
     return turn;
 }
 
-unsigned long Board::getHash()
+uint64_t Board::getHash()
 {
     return h;
 }

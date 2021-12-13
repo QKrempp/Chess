@@ -33,7 +33,7 @@ move Human::play(Board* b, Arbitre* a)
     move ml[100];
     for(byte i = 0; i < pieces_nb; i++)
     {
-        unsigned long mv = b->getAltMoves(pieces[i], color);
+        uint64_t mv = b->getAltMoves(pieces[i], color);
         for(byte j = 0; j < 64; j++)
         {
             if(IS_TARGET(mv, j) && a->isMoveValid(b, BYTE_TO_MOVE(pieces[i], j)))
@@ -89,7 +89,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
         if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
         {
 
-            unsigned long mv = b->getAltMoves(i, color);
+            uint64_t mv = b->getAltMoves(i, color);
             for(byte j = 0; j < 64; j++)
             {
                 if(IS_TARGET(mv, j) && a->isMoveValid(b, BYTE_TO_MOVE(i, j)))
@@ -120,7 +120,7 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta){
             byte p = b->getPiece(i);
             if(PIECE_COLOR(p) != color && PIECE_TYPE(p) != EMPTY)
             {
-                unsigned long mv = b->getAltMoves(i, b->getPlayer());
+                uint64_t mv = b->getAltMoves(i, b->getPlayer());
                 for(byte j = 0; j < 64; j++){
                     if(IS_TARGET(mv, j))
                     {
@@ -147,7 +147,7 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta){
             byte p = b->getPiece(i);
             if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
             {
-                unsigned long mv = b->getAltMoves(i, b->getPlayer());
+                uint64_t mv = b->getAltMoves(i, b->getPlayer());
                 for(byte j = 0; j < 64; j++){
                     if(IS_TARGET(mv, j))
                     {

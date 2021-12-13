@@ -50,7 +50,7 @@ class Arbitre;
 
 typedef struct HashTable
 {
-    unsigned long hash = 0;
+    uint64_t hash = 0;
     byte nb = 0;
     byte turn[3] = {0, 0, 0};
     struct HashTable* nextHash = NULL;
@@ -61,15 +61,15 @@ class Board
     friend class Arbitre;
 private:
     byte pieces[64]                 = {0};
-    unsigned long threats[2][64]    = {{0}};
-    unsigned long moves[2][64]      = {{0}};
+    uint64_t threats[2][64]    = {{0}};
+    uint64_t moves[2][64]      = {{0}};
     byte kings[2]                   = {04, 074};
     byte castling[2][2]             = {{1, 1}, {1, 1}};
     HashTable* hash                 = NULL;
     byte winner                     = RUNNING;
     byte prises                     = 0;
     byte player                     = WHITE;
-    unsigned long h                 = 0ul;
+    uint64_t h                 = 0ul;
     byte turn                       = 0;
 public:
     Board();
@@ -87,12 +87,12 @@ public:
     byte getPrises();
     byte getPlayer();
     byte getTurn();
-    unsigned long getThreats(byte c, byte color);
-    unsigned long getAltThreats(byte c, byte color);
-    unsigned long getMoves(byte c, byte color);
-    unsigned long getAltMoves(byte c, byte color);
+    uint64_t getThreats(byte c, byte color);
+    uint64_t getAltThreats(byte c, byte color);
+    uint64_t getMoves(byte c, byte color);
+    uint64_t getAltMoves(byte c, byte color);
 
-    unsigned long getHash();
+    uint64_t getHash();
 
     friend std::ostream& operator<<(std::ostream& os, const Board& b);
 };
