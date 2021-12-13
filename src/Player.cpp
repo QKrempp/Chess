@@ -184,19 +184,19 @@ int AlphaBeta::evaluateBoard(Board* b){
         }
         switch(PIECE_TYPE(b->getPiece(i))){
             case PAWN:
-                points = 1;
+                points = 10;
                 break;
             case ROOK:
-                points = 7;
+                points = 70;
                 break;
             case KNIGHT:
-                points = 5;
+                points = 50;
                 break;
             case BISHOP:
-                points = 5;
+                points = 50;
                 break;
             case QUEEN:
-                points = 10;
+                points = 100;
                 break;
             case KING:
                 points = 10000;
