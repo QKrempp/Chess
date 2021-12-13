@@ -10,19 +10,32 @@ byte play_once = 0;
 byte get_moves = 0;
 byte get_board = 0;
 byte update = 0;
+byte cli_mode = 0;
 
 const char* game_f_name = "data/game.txt";
 
-int parseArgs(Board* b, Arbitre* a, int argc, char* argv[]);
+int parseArgs(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {
     Board b;
     b.initDefault();
-    Arbitre a(new AlphaBeta(&b, WHITE), new AlphaBeta(&b, BLACK));
+    parseArgs(argc, argv);
+	Player* p1;
+	Player* p2;
+	if(cli_mode)
+	{
+        p1 = new Human(&b, WHITE);
+        p2 = new AlphaBeta(&b, BLACK);
+	}
+	else
+	{
+        p1 = new AlphaBeta(&b, WHITE);
+        p2 = new AlphaBeta(&b, BLACK);
+	}
+	Arbitre a(p1, p2);
     a.initMenaces(&b);
     a.initHash(&b);
-    parseArgs(&b, &a, argc, argv);
     if(inpute_mode)
     {
         std::ifstream game_f;
@@ -51,6 +64,10 @@ int main(int argc, char* argv[])
         while(b.getWinner() == RUNNING && play_once)
         {
             std::cout << (int) b.getTurn() << std::endl;
+			if(cli_mode)
+			{
+				std::cout << b << std::endl;
+			}
             a.play(&b);
             b.nextTurn();
             play_once--;
@@ -64,6 +81,10 @@ int main(int argc, char* argv[])
         while(b.getWinner() == RUNNING)
         {
             std::cout << (int) b.getTurn() << std::endl;
+			if(cli_mode)
+			{
+				std::cout << b << std::endl;
+			}
             a.play(&b);
             b.nextTurn();
         }
@@ -119,7 +140,7 @@ int main(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
-int parseArgs(Board* b, Arbitre* a, int argc, char* argv[])
+int parseArgs(int argc, char* argv[])
 {
     int i = 0;
     while(i < argc)
@@ -128,6 +149,18 @@ int parseArgs(Board* b, Arbitre* a, int argc, char* argv[])
         {
             switch(argv[i][1])
             {
+                case 'b':
+                {
+                    get_board = 1;
+                    i++;
+                    break;
+                }
+				case 'c':
+				{
+					cli_mode = 1;
+					i++;
+					break;
+				}	
                 case 'i':
                 {
                     inpute_mode = 1;
@@ -137,6 +170,12 @@ int parseArgs(Board* b, Arbitre* a, int argc, char* argv[])
                         game_f_name = argv[i];
                         i++;
                     }
+                    break;
+                }
+                case 'm':
+                {
+                    get_moves = 1;
+                    i++;
                     break;
                 }
                 case 's':
@@ -158,18 +197,6 @@ int parseArgs(Board* b, Arbitre* a, int argc, char* argv[])
                     {
                         play_once = 1;
                     }
-                    break;
-                }
-                case 'm':
-                {
-                    get_moves = 1;
-                    i++;
-                    break;
-                }
-                case 'b':
-                {
-                    get_board = 1;
-                    i++;
                     break;
                 }
                 case 'u':
