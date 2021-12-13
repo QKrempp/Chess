@@ -45,7 +45,7 @@ def create_moves():
 
 def draw_moves(x, y):
     for t in mvs[x][y]:
-        canvas.create_rectangle((t[0] * 45), (t[1] * 45), ((t[0] + 1) * 45), ((t[1] + 1) * 45), fill='blue')
+        col[t[0]][t[1]] = [["#28a4e2", "#5865f2"][(t[0] + t[1]) % 2]]
 
 def draw_pieces():
     for p in pcs:
@@ -64,8 +64,8 @@ def callback(event):
     if(not selected):
         x_selected = event.y // 45
         y_selected = event.x // 45
-        draw_board()
         draw_moves(x_selected, y_selected)
+        draw_board()
         draw_pieces()
         selected = 1
     else:
@@ -78,6 +78,7 @@ def callback(event):
             subprocess.run(["./Chess.xpp", "-u"])
             create_pieces()
             create_moves()
+            reset_color()
             draw_board()
             draw_pieces()
             root.update()
@@ -88,6 +89,7 @@ def callback(event):
             draw_pieces()
             selected = 0
         else:
+            reset_color()
             draw_board()
             draw_pieces()
             selected = 0
