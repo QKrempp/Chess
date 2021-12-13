@@ -18,7 +18,7 @@ def reset_color():
 def create_pieces():
     global pcs
     pcs = []
-    board = open("board.txt", "r")
+    board = open("data/board.txt", "r")
     pieces = {1:'plt', 2:'rlt', 3:'nlt', 4:'blt', 5:'qlt', 6:'klt', 9:'pdt', 10:'rdt', 11:'ndt', 12:'bdt', 13:'qdt', 14:'kdt'}
     for i in range(8):
         for j in range(8):
@@ -32,7 +32,7 @@ def create_pieces():
 def create_moves():
     global mvs
     mvs = [[[] for j in range(8)] for i in range(8)]
-    moves = open("moves.txt", "r")
+    moves = open("data/moves.txt", "r")
     indice = 0
     for i in range(8):
         for j in range(8):
@@ -72,7 +72,7 @@ def callback(event):
         x_click = event.x // 45
         y_click = event.y // 45
         if((x_click, y_click) in mvs[x_selected][y_selected]):
-            f = open("game.txt", "a")
+            f = open("data/game.txt", "a")
             f.write("abcdefgh"[y_selected] + str(x_selected + 1) + "abcdefgh"[x_click] + str(y_click + 1) + "\n")
             f.close()
             subprocess.run(["./Chess.xpp", "-u"])
@@ -92,7 +92,7 @@ def callback(event):
             draw_pieces()
             selected = 0
 
-f = open("game.txt", "w")
+f = open("data/game.txt", "w")
 f.write("")
 f.close()
 subprocess.run(["./Chess.xpp", "-u"])

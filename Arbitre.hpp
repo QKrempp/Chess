@@ -24,7 +24,7 @@ private:
     unsigned long hashKeys[64][12];
     byte movePiece(Board* b, move m);
     Player* p[2];
-    const char* fn = "game.txt";
+    const char* fn = "data/game.txt";
 
     //  Calcul les menaces appliquées à chaque cases, et les coups jouables pour chaque pièce
     void threatPawn(Board* b, byte c);

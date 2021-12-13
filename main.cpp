@@ -11,7 +11,7 @@ byte get_moves = 0;
 byte get_board = 0;
 byte update = 0;
 
-const char* game_f_name = "game.txt";
+const char* game_f_name = "data/game.txt";
 
 int parseArgs(Board* b, Arbitre* a, int argc, char* argv[]);
 
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     if(get_board)
     {
         std::ofstream game_b;
-        game_b.open("board.txt", std::ios::trunc);
+        game_b.open("data/board.txt", std::ios::trunc);
         if(game_b)
         {
             std::string s;
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     if(get_moves)
     {
         std::ofstream game_m;
-        game_m.open("moves.txt", std::ios::trunc);
+        game_m.open("data/moves.txt", std::ios::trunc);
         if(game_m)
         {
             std::string s;
