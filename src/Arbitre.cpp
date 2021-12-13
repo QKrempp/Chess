@@ -8,8 +8,8 @@ Arbitre::Arbitre(Player* p1, Player* p2)
 //     srand(time(NULL));
 //     for(int i = 0; i < 64; i++){
 //         for(int j = 0; j < 12; j++){
-//             hashKeys[i][j] = (unsigned long) rand() << 32;
-//             hashKeys[i][j] += (unsigned long) rand();
+//             hashKeys[i][j] = (uint64_t) rand() << 32;
+//             hashKeys[i][j] += (uint64_t) rand();
 //         }
 //     }
 }
@@ -44,7 +44,7 @@ void Arbitre::initHash(Board* b)
 {
     for(int i = 0; i < 64; i++){
         if(PIECE_TYPE(b->pieces[i]) != EMPTY){
-            b->hash->hash ^= 1ul << i;
+            b->hash->hash ^= UINT64_C(1) << i;
         }
     }
     b->hash->turn[0] = 0;
@@ -55,7 +55,7 @@ void Arbitre::initHash(Board* b)
 // {
 //     byte start = MOVE_START(m);
 //     byte stop = MOVE_STOP(m);
-//     unsigned long hash = b->hash->hash;
+//     uint64_t hash = b->hash->hash;
 //     if(PIECE_TYPE(b->pieces[stop]) != EMPTY)    // If there was a piece on the arrival case, we xor it out of the hash
 //     {
 //         std::cout << "Xor-ing out: ";
@@ -84,13 +84,13 @@ void Arbitre::updateHash(Board* b, move m)
 {
     byte start = MOVE_START(m);
     byte stop = MOVE_STOP(m);
-    unsigned long hash = b->hash->hash;
+    uint64_t hash = b->hash->hash;
     if(PIECE_TYPE(b->pieces[stop]) != EMPTY)    // If there was a piece on the arrival case, we xor it out of the hash
     {
-        hash ^= 1ul << stop;
+        hash ^= UINT64_C(1) << stop;
     }
-    hash ^= 1ul << start;     // We xor out the moved piece from its starting case
-    hash ^= 1ul << stop;      // We xor in the moved piece on its arrival case
+    hash ^= UINT64_C(1) << start;     // We xor out the moved piece from its starting case
+    hash ^= UINT64_C(1) << stop;      // We xor in the moved piece on its arrival case
     b->h = hash;
 }
 
@@ -151,7 +151,7 @@ byte Arbitre::movePiece(Board* b, move m)
 
 void Arbitre::manageThreats(Board* b, move m)
  {
-    unsigned long casesToCheck = 0;
+    uint64_t casesToCheck = 0;
 
     // Construction de la liste des cases à actualiser
     casesToCheck |= b->getThreats(MOVE_START(m), WHITE);
@@ -164,8 +164,8 @@ void Arbitre::manageThreats(Board* b, move m)
     casesToCheck |= b->getMoves(MOVE_STOP(m), WHITE);
     casesToCheck |= b->getMoves(MOVE_STOP(m), BLACK);
 
-    casesToCheck |= 1ul << MOVE_START(m);
-    casesToCheck |= 1ul << MOVE_STOP(m);
+    casesToCheck |= UINT64_C(1) << MOVE_START(m);
+    casesToCheck |= UINT64_C(1) << MOVE_STOP(m);
 
     byte wk = IS_TARGET(casesToCheck, b->kings[WHITE]);
     byte bk = IS_TARGET(casesToCheck, b->kings[BLACK]);
@@ -449,7 +449,7 @@ byte Arbitre::isKingAlive(Board* b, byte c)
     return (b->pieces[b->kings[c]] == PIECE(c, KING));
 }
 
-byte Arbitre::isConfig3TimesMet(Board* b, unsigned long hash)
+byte Arbitre::isConfig3TimesMet(Board* b, uint64_t hash)
 {
     HashTable* tmp = b->hash;
     while(tmp->nextHash != NULL)
@@ -518,13 +518,13 @@ void Arbitre::updateThreat(Board* b, byte c)
 void Arbitre::swapMove(Board* b, move m)
 {
     byte color = PIECE_COLOR(b->pieces[MOVE_START(m)]);
-    b->moves[color][MOVE_STOP(m)] ^= (1ul << MOVE_START(m));
+    b->moves[color][MOVE_STOP(m)] ^= (UINT64_C(1) << MOVE_START(m));
 }
 
 void Arbitre::swapThreat(Board* b, move m)
 {
     byte color = PIECE_COLOR(b->pieces[MOVE_START(m)]);
-    b->threats[color][MOVE_STOP(m)] ^= (1ul << MOVE_START(m));
+    b->threats[color][MOVE_STOP(m)] ^= (UINT64_C(1) << MOVE_START(m));
 }
 
 void Arbitre::threatPawn(Board* b, byte c)
@@ -1143,7 +1143,7 @@ void printPiece(byte p)
     std::cout << std::endl;
 }
 
-void showCases(unsigned long c)
+void showCases(uint64_t c)
 {
         for(byte i = 0; i < 8; i++)
         {

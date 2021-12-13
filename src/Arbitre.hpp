@@ -21,7 +21,7 @@ class Player;
 class Arbitre
 {
 private:
-    unsigned long hashKeys[64][12];
+    uint64_t hashKeys[64][12];
     byte movePiece(Board* b, move m);
     Player* p[2];
     const char* fn = "data/game.txt";
@@ -56,7 +56,7 @@ public:
     byte isMoveValid(Board* b, move m);
     byte isCheckmate(Board* b, byte color);
     byte isKingAlive(Board* b, byte c);
-    byte isConfig3TimesMet(Board* b, unsigned long hash);
+    byte isConfig3TimesMet(Board* b, uint64_t hash);
 
     void printMoves(Board* b);
 };
@@ -66,7 +66,7 @@ void printMove(move m);
 void printPiece(byte p);
 void moveToFile(move m, const char* fn);
 
-void showCases(unsigned long c);
+void showCases(uint64_t c);
 void showCases(byte c);
 
 #endif
