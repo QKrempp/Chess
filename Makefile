@@ -2,9 +2,10 @@ CXX = g++
 C = gcc
 CFLAGS = -W -Wall -ansi -pedantic -std=c++11
 LDFLAGS =
+BIN=./src/
 EXEC = Chess.xpp
-SRC= Arbitre.cpp Player.cpp Board.cpp main.cpp
-DEPS= Board.hpp Arbitre.hpp Player.hpp
+SRC= $(BIN)Arbitre.cpp $(BIN)Player.cpp $(BIN)Board.cpp $(BIN)main.cpp
+DEPS= $(BIN)Board.hpp $(BIN)Arbitre.hpp $(BIN)Player.hpp
 OBJ= $(SRC:.cpp=.o)
 
 # $@	Le nom de la cible
@@ -18,16 +19,16 @@ all : $(EXEC)
 Chess.xpp : $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-main.o : Arbitre.hpp Player.hpp Board.hpp
+$(BIN)main.o : $(BIN)Arbitre.hpp $(BIN)Player.hpp $(BIN)Board.hpp
 
-%.o: %.cpp $(DEPS)
+$(BIN)%.o: $(BIN)%.cpp $(DEPS)
 	$(CXX) -o $@ -c $< $(CFLAGS)
 
-%.o: %.c
+$(BIN)%.o: $(BIN)%.c
 	$(C) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.o
+	rm -rf $(BIN)*.o
 
 mrproper: clean
 	rm -rf Chess.xpp
