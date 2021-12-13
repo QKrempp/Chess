@@ -1,5 +1,6 @@
 # Chess
-Mon implémentation de l'lgorithme Alpha-Beta pour jouer aux échecs
+
+Mon implémentation de l'algorithme Alpha-Beta pour jouer aux échecs
 ===
 
 ## Utilisation
