@@ -1,7 +1,7 @@
 CXX = g++
 C = gcc
 CFLAGS = -W -Wall -ansi -pedantic -std=c++11
-CXXFLAGS = -O2 -W -Wall -ansi -pedantic -std=c++11
+CXXFLAGS = -O3 -W -Wall -ansi -pedantic -std=c++11
 LDFLAGS =
 SRC=./src/
 EXEC = Chess.xpp

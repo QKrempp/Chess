@@ -54,7 +54,7 @@ move Human::play(Board* b, Arbitre* a)
     std::cout << std::endl;
     std::cin >> s;
     l = 0;
-    for(int i = 0; i < s.size(); i++)
+    for(int i = 0; i < (int) s.size(); i++)
     {
         l = (move)(s[i] - '0') + 10 * l;
     }
@@ -79,7 +79,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
             pieces_nb--;
         }
     }
-    move bestMove;
+    move bestMove = 0;
     int bestScore = -10000;
     int alpha = -10000;
     int beta = 10000;
@@ -176,41 +176,45 @@ int AlphaBeta::evaluateBoard(Board* b){
     int score = 0;
     int mult = 0;
     int points = 0;
-    for(int i = 0; i < 64; i++){
-        if(PIECE_COLOR(b->getPiece(i)) == color){
+    byte c = 0;
+    for(byte i = 0; i < 64; i++){
+        if(PIECE_COLOR(b->getPiece(i)) == color)
+        {
             mult = 1;
-        }else{
+        }
+        else
+        {
             mult = -1;
+        }
+        if(PIECE_COLOR(b->getPiece(i) == WHITE))
+        {
+            c = i;
+        }
+        else
+        {
+            c = i ^ 56;
         }
         switch(PIECE_TYPE(b->getPiece(i))){
             case PAWN:
-                points = 10;
+                points = 100 + pieces_sqv[0][c];
                 break;
             case ROOK:
-                points = 70;
+                points = 500 + pieces_sqv[1][c];
                 break;
             case KNIGHT:
-                points = 50;
+                points = 320 + pieces_sqv[2][c];
                 break;
             case BISHOP:
-                points = 50;
+                points = 330 + pieces_sqv[3][c];
                 break;
             case QUEEN:
-                points = 100;
+                points = 900 + pieces_sqv[4][c];
                 break;
             case KING:
-                points = 10000;
+                points = 20000 + pieces_sqv[5][c];
                 break;
             default:
                 points = 0;
-        }
-        if(b->getThreats(i, color))
-        {
-            score++;
-        }
-        if(b->getThreats(i, !color))
-        {
-            score--;
         }
         score += mult * points;
     }
