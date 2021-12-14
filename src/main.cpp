@@ -116,7 +116,15 @@ int main(int argc, char* argv[])
             std::string s;
             for(byte i = 0; i < 64; i++)
             {
-                game_m << b.getAltMoves(i, b.getPlayer()) << std::endl;
+                uint64_t mv = b.getAltMoves(i, b.getPlayer());
+//                 for(byte j = 0; j < 64; j++)
+//                 {
+//                     if(IS_TARGET(mv, j) && !a.isMoveValid(&b, BYTE_TO_MOVE(i, j)))
+//                     {
+//                         mv ^= UINT64_C(1) << j;
+//                     }
+//                 }
+                game_m << mv << std::endl;
             }
             game_m.close();
         }

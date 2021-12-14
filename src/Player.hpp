@@ -32,7 +32,7 @@ public:
 class AlphaBeta : public Player
 {
 private:
-    byte depth = 7;
+    byte depth = 6;
     char pieces_sqv[6][64] =  {{0,  0,  0,  0,  0,  0,  0,  0,
                                 50, 50, 50, 50, 50, 50, 50, 50,
                                 10, 10, 20, 30, 30, 20, 10, 10,
@@ -81,10 +81,11 @@ private:
                                 -10,-20,-20,-20,-20,-20,-20,-10,
                                 20, 20,  0,  0,  0,  0, 20, 20,
                                 20, 30, 10,  0,  0, 10, 30, 20}};
+    uint64_t calculated[8];
 public:
     AlphaBeta(Board*b, byte c) : Player(b, c){};
     move play(Board * b, Arbitre * a) override;
-    int digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta);
+    int digDown(Board* b, Arbitre* a, int depth, int alpha, int beta);
     int evaluateBoard(Board* b);
 };
 

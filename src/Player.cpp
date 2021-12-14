@@ -70,19 +70,12 @@ move Human::play(Board* b, Arbitre* a)
 
 move AlphaBeta::play(Board* b, Arbitre* a)
 {
-    for(byte i = 0; i < pieces_nb; i++)
-    {
-        byte p = b->getPiece(pieces[i]);
-        if(PIECE_TYPE(p) == EMPTY || PIECE_COLOR(p) != color)
-        {
-            pieces[i] = pieces[pieces_nb - 1];
-            pieces_nb--;
-        }
-    }
     move bestMove = 0;
-    int bestScore = -10000;
-    int alpha = -10000;
-    int beta = 10000;
+    int bestScore = -__INT_MAX__;
+    int alpha = -__INT_MAX__;
+    int beta = __INT_MAX__;
+    int v = -__INT_MAX__;
+    calculated[depth]++;
     for(byte i = 0; i < 64; i++){
         std::cout << (int) i << "/64" << std::endl;
         byte p = b->getPiece(i);
@@ -96,7 +89,18 @@ move AlphaBeta::play(Board* b, Arbitre* a)
                 {
                     Board b0 = *b;
                     a->moveRequest(&b0, BYTE_TO_MOVE(i, j));
-                    int score = digDown(&b0, a, depth - 1, &alpha, &beta) - ((int) a->isConfig3TimesMet(b, b0.getHash())) * 3000;
+                    int score = digDown(&b0, a, depth - 1, alpha, beta) - ((int) a->isConfig3TimesMet(b, b0.getHash())) * 3000;
+                    if(score > v)
+                    {
+                        v = score;
+                    }
+                    if(v > alpha)
+                    {
+                        alpha = v;
+                    }
+//                     std::cout << "Score de " << score << " pour ";
+//                     printMove(BYTE_TO_MOVE(i, j));
+//                     std::cout << std::endl;
                     if(score > bestScore){
                         bestScore = score;
                         bestMove = BYTE_TO_MOVE(i, j);
@@ -105,16 +109,23 @@ move AlphaBeta::play(Board* b, Arbitre* a)
             }
         }
     }
+    for(byte i = 0; i < 8; i++)
+    {
+        std::cout << calculated[i] << ' ';
+    }
+    std::cout << std::endl;
     a->playRequest(b, bestMove);
     return bestMove;
 }
 
-int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta){
+int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int alpha, int beta){
+    calculated[depth]++;
     int v = 0;
-    if(depth == 0 || !a->isKingAlive(b, WHITE) || !a->isKingAlive(b, BLACK) || b->getPrises() > 40){
-        return evaluateBoard(b);
+    if(depth == 0 || !a->isKingAlive(b, WHITE) || !a->isKingAlive(b, BLACK) || b->getPrises() > 50){
+        int sc = evaluateBoard(b);
+        return sc;
     }else if(b->getPlayer() != color){
-        v = 100000;
+        v = __INT_MAX__;
         for(byte i = 0; i < 64; i++)
         {
             byte p = b->getPiece(i);
@@ -130,18 +141,20 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta){
                         if(ab < v){
                             v = ab;
                         }
-                        if(*alpha >= v){
+                        if(alpha >= v){
+                            // Coupure alpha
+//                             std::cout << "Coupure alpha (" << alpha << ", " << beta << ", " << v << ")" << std::endl;
                             return v;
                         }
-                        if(v < *beta){
-                            *beta = v;
+                        if(v < beta){
+                            beta = v;
                         }
                     }
                 }
             }
         }
     }else{
-        v = -100000;
+        v = -__INT_MAX__;
         for(byte i = 0; i < 64; i++)
         {
             byte p = b->getPiece(i);
@@ -157,12 +170,13 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int* alpha, int* beta){
                         if(ab > v){
                             v = ab;
                         }
-                        if(v >= *beta){
+                        if(v >= beta){
                             // Coupure beta
+//                             std::cout << "Coupure beta (" << alpha << ", " << beta << ", " << v << ")" << std::endl;
                             return v;
                         }
-                        if(v > *alpha){
-                            *alpha = v;
+                        if(v > alpha){
+                            alpha = v;
                         }
                     }
                 }
@@ -196,25 +210,51 @@ int AlphaBeta::evaluateBoard(Board* b){
         }
         switch(PIECE_TYPE(b->getPiece(i))){
             case PAWN:
-                points = 100 + pieces_sqv[0][c];
+                points = 1000 + pieces_sqv[0][c];
                 break;
             case ROOK:
-                points = 500 + pieces_sqv[1][c];
+                points = 5000 + pieces_sqv[1][c];
                 break;
             case KNIGHT:
-                points = 320 + pieces_sqv[2][c];
+                points = 3200 + pieces_sqv[2][c];
                 break;
             case BISHOP:
-                points = 330 + pieces_sqv[3][c];
+                points = 3300 + pieces_sqv[3][c];
                 break;
             case QUEEN:
-                points = 900 + pieces_sqv[4][c];
+                points = 9000 + pieces_sqv[4][c];
                 break;
             case KING:
-                points = 20000 + pieces_sqv[5][c];
+                points = 200000 + pieces_sqv[5][c];
                 break;
             default:
                 points = 0;
+        }
+//         switch(PIECE_TYPE(b->getPiece(i))){
+//             case PAWN:
+//                 points = 1;
+//                 break;
+//             case ROOK:
+//                 points = 1;
+//                 break;
+//             case KNIGHT:
+//                 points = 1;
+//                 break;
+//             case BISHOP:
+//                 points = 1;
+//                 break;
+//             case QUEEN:
+//                 points = 1;
+//                 break;
+//             case KING:
+//                 points = 1;
+//                 break;
+//             default:
+//                 points = 0;
+//         }
+        if(b->getMoves(i, color))
+        {
+            score++;
         }
         score += mult * points;
     }
