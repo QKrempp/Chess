@@ -23,6 +23,7 @@ void Arbitre::eraseHistory()
 void Arbitre::play(Board* b)
 {
     moveToFile(p[b->player]->play(b, this), fn);
+//     initMenaces(b);
 }
 
 
@@ -166,6 +167,39 @@ void Arbitre::manageThreats(Board* b, move m)
 
     casesToCheck |= UINT64_C(1) << MOVE_START(m);
     casesToCheck |= UINT64_C(1) << MOVE_STOP(m);
+
+    if(MOVE_START(m) - 010 > 0)
+    {
+        byte p = b->getPiece(MOVE_START(m) - 010);
+        if(p == PIECE(WHITE, PAWN))
+        {
+            casesToCheck |= UINT64_C(1) << (MOVE_START(m) - 010);
+        }
+        if(MOVE_START(m) - 020 > 0)
+        {
+            byte p = b->getPiece(MOVE_START(m) - 020);
+            if(p == PIECE(WHITE, PAWN))
+            {
+                casesToCheck |= UINT64_C(1) << (MOVE_START(m) - 020);
+            }
+        }
+    }
+    if(MOVE_START(m) + 010 < 0100)
+    {
+        byte p = b->getPiece(MOVE_START(m) + 010);
+        if(p == PIECE(WHITE, PAWN))
+        {
+            casesToCheck |= UINT64_C(1) << (MOVE_START(m) + 010);
+        }
+        if(MOVE_START(m) + 020 < 0100)
+        {
+            byte p = b->getPiece(MOVE_START(m) + 020);
+            if(p == PIECE(WHITE, PAWN))
+            {
+                casesToCheck |= UINT64_C(1) << (MOVE_START(m) + 020);
+            }
+        }
+    }
 
     byte wk = IS_TARGET(casesToCheck, b->kings[WHITE]);
     byte bk = IS_TARGET(casesToCheck, b->kings[BLACK]);

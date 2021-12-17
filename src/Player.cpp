@@ -74,9 +74,9 @@ move AlphaBeta::play(Board* b, Arbitre* a)
     int bestScore = -__INT_MAX__;
     int alpha = -__INT_MAX__;
     int beta = __INT_MAX__;
-    int v = -__INT_MAX__;
     calculated[depth]++;
-    for(byte i = 0; i < 64; i++){
+    for(byte i = 0; i < 64; i++)
+    {
         std::cout << (int) i << "/64" << std::endl;
         byte p = b->getPiece(i);
         if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
@@ -90,17 +90,10 @@ move AlphaBeta::play(Board* b, Arbitre* a)
                     Board b0 = *b;
                     a->moveRequest(&b0, BYTE_TO_MOVE(i, j));
                     int score = digDown(&b0, a, depth - 1, alpha, beta) - ((int) a->isConfig3TimesMet(b, b0.getHash())) * 3000;
-                    if(score > v)
+                    if(score > alpha)
                     {
-                        v = score;
+                        alpha = score;
                     }
-                    if(v > alpha)
-                    {
-                        alpha = v;
-                    }
-//                     std::cout << "Score de " << score << " pour ";
-//                     printMove(BYTE_TO_MOVE(i, j));
-//                     std::cout << std::endl;
                     if(score > bestScore){
                         bestScore = score;
                         bestMove = BYTE_TO_MOVE(i, j);
@@ -185,6 +178,22 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int alpha, int beta){
     }
     return v;
 }
+
+// fonction alphabeta(nœud, i)
+//          /* i représente la valeur minimale du résultat attendu.
+//          Si on s'aperçoit que le résultat sera inférieur à i, autant renvoyer directement la valeur en cours (inférieure à i)
+//          et ne pas perdre de temps à calculer la vraie valeur du nœud qui sera, de toute façon, inférieure à i également.
+//          À l'initialisation, on prendra i = -∞ */
+//    si nœud est une feuille alors
+//        retourner la valeur de nœud
+//    sinon
+//        j = -∞
+//        pour tout fils de nœud faire
+//            j = max(j, alphabeta(fils, j))
+//            si -j ⩽ i alors
+//                retourner -j
+//        retourner -j
+
 
 int AlphaBeta::evaluateBoard(Board* b){
     int score = 0;

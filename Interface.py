@@ -1,5 +1,6 @@
 from tkinter import *
 import subprocess
+import platform
 
 root = Tk()
 col = []
@@ -8,6 +9,10 @@ mvs = []
 x_selected = 0;
 y_selected = 0;
 selected = 0;
+exefile = "./Chess.xpp"
+
+if(platform.system() == "Windows"):
+    exefile = "Chess.exe"
 
 canvas= Canvas(root, width=(8 * 45), height=(8 * 45))
 
@@ -75,14 +80,14 @@ def callback(event):
             f = open("data/game.txt", "a")
             f.write("abcdefgh"[y_selected] + str(x_selected + 1) + "abcdefgh"[x_click] + str(y_click + 1) + "\n")
             f.close()
-            subprocess.run(["./Chess.xpp", "-u"])
+            subprocess.run([exefile, "-u"])
             create_pieces()
             create_moves()
             reset_color()
             draw_board()
             draw_pieces()
             root.update()
-            subprocess.run(["./Chess.xpp", "-i", "-s", "-b", "-m"])
+            subprocess.run([exefile, "-i", "-s", "-b", "-m"])
             create_pieces()
             create_moves()
             draw_board()
@@ -97,7 +102,7 @@ def callback(event):
 f = open("data/game.txt", "w")
 f.write("")
 f.close()
-subprocess.run(["./Chess.xpp", "-u"])
+subprocess.run([exefile, "-u"])
 reset_color()
 draw_board()
 create_pieces()

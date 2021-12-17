@@ -1,10 +1,11 @@
 CXX = g++
+WINCXX = x86_64-w64-mingw32-g++
 C = gcc
 CFLAGS = -W -Wall -ansi -pedantic -std=c++11
 CXXFLAGS = -O3 -W -Wall -ansi -pedantic -std=c++11
 LDFLAGS =
 SRC=./src/
-EXEC = Chess.xpp
+EXEC = Chess.xpp Chess.exe
 CPPFILES= $(SRC)Arbitre.cpp $(SRC)Player.cpp $(SRC)Board.cpp $(SRC)main.cpp
 DEPS= $(SRC)Board.hpp $(SRC)Arbitre.hpp $(SRC)Player.hpp
 OBJ= $(CPPFILES:.cpp=.o)
@@ -20,6 +21,9 @@ all : $(EXEC)
 Chess.xpp : $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
+Chess.exe : $(CPPFILES)
+	$(WINCXX) -o $@ $^ $(CXXFLAGS)
+
 $(SRC)main.o : $(SRC)Arbitre.hpp $(SRC)Player.hpp $(SRC)Board.hpp
 
 $(SRC)%.o: $(SRC)%.cpp $(DEPS)
@@ -32,4 +36,4 @@ clean:
 	rm -rf $(SRC)*.o
 
 mrproper: clean
-	rm -rf Chess.xpp
+	rm -rf Chess.xpp Chess.exe
