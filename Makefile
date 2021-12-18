@@ -4,10 +4,12 @@ CFLAGS = -W -Wall -ansi -pedantic -std=c++11
 CXXFLAGS = -O3 -W -Wall -ansi -pedantic -std=c++11
 LDFLAGS =
 SRC=./src/
+WIN=./win/
 EXEC = Chess.xpp
-CPPFILES= $(SRC)Arbitre.cpp $(SRC)Player.cpp $(SRC)Board.cpp $(SRC)main.cpp
+CXXFILES= $(SRC)Arbitre.cpp $(SRC)Player.cpp $(SRC)Board.cpp $(SRC)main.cpp
 DEPS= $(SRC)Board.hpp $(SRC)Arbitre.hpp $(SRC)Player.hpp
-OBJ= $(CPPFILES:.cpp=.o)
+OBJ= $(CXXFILES:.cpp=.o)
+
 
 # $@	Le nom de la cible
 # $<	Le nom de la première dépendance
@@ -26,10 +28,14 @@ $(SRC)%.o: $(SRC)%.cpp $(DEPS)
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 $(SRC)%.o: $(SRC)%.c
-	$(C) -o $@ -c $< $(CXXFLAGS)
+	$(C) -o $@ -c $< $(CFLAGS)
 
 clean:
 	rm -rf $(SRC)*.o
 
 mrproper: clean
-	rm -rf Chess.xpp Chess.exe
+	rm -rf Chess.xpp win/Chess.exe
+
+$(WIN)Chess.exe : $(WINOBJ)
+	x86_64-w64-mingw32-g++ $(CXXFILES) -o win/Chess.exe $(CXXFLAGS)
+

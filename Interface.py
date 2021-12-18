@@ -13,7 +13,9 @@ selected = 0;
 exefile = "./Chess.xpp"
 
 if(platform.system() == "Windows"):
-    exefile = "Chess.exe"
+    import os
+    exefile = "win/Chess.exe"
+    os.chdir('win/')
 
 canvas= Canvas(root, width=(8 * 45), height=(8 * 45))
 
