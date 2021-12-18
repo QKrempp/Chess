@@ -6,6 +6,7 @@ root = Tk()
 col = []
 pcs = []
 mvs = []
+css = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7}
 x_selected = 0;
 y_selected = 0;
 selected = 0;
@@ -18,7 +19,23 @@ canvas= Canvas(root, width=(8 * 45), height=(8 * 45))
 
 def reset_color():
     global col
+    global css
     col = [[("#ffce9e", "#d18b47")[(i + j) % 2] for j in range(8)] for i in range(8)]
+
+def show_last_move():
+    f = open("data/game.txt", "r")
+    tmp = f.readlines()
+    last_mv = tmp[-1]
+    f.close()
+    if last_mv == 'D':
+        pass
+    elif last_mv == 'B':
+        pass
+    elif last_mv == 'W':
+        pass
+    else:
+        col[css[last_mv[0]]][int(last_mv[1]) - 1] = ["#ff9ea0", "#d14b47"][(css[last_mv[0]] + int(last_mv[1]) - 1) % 2]
+        col[css[last_mv[2]]][int(last_mv[3]) - 1] = ["#ff9ea0", "#d14b47"][(css[last_mv[2]] + int(last_mv[3]) - 1) % 2]
 
 def create_pieces():
     global pcs
@@ -50,7 +67,7 @@ def create_moves():
 
 def draw_moves(x, y):
     for t in mvs[x][y]:
-        col[t[0]][t[1]] = [["#28a4e2", "#5865f2"][(t[0] + t[1]) % 2]]
+        col[t[0]][t[1]] = [["#9ed3ff", "#47abd1"][(t[0] + t[1]) % 2]]
 
 def draw_pieces():
     for p in pcs:
@@ -84,12 +101,15 @@ def callback(event):
             create_pieces()
             create_moves()
             reset_color()
+            show_last_move()
             draw_board()
             draw_pieces()
             root.update()
             subprocess.run([exefile, "-i", "-s", "-b", "-m"])
             create_pieces()
             create_moves()
+            reset_color()
+            show_last_move()
             draw_board()
             draw_pieces()
             selected = 0
