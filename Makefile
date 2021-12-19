@@ -36,6 +36,6 @@ clean:
 
 mrproper: clean
 	rm -f $(BIN_DIR)/$(PROG_NAME) $(WIN_DIR)/$(WIN_PROG)
-#
+
 # test:
 # 	@echo $(OBJ_LIST) $(WIN_OBJ) $(SRC_LIST)

@@ -21,9 +21,6 @@ if(platform.system() == "Windows"):
     import os
     os.chdir('win/')
     exefile = "Chess.exe"
-    gamefile = "../data/game.txt"
-    boardfile = "../data/board.txt"
-    movefile = "../data/moves.txt"
     imgfolder = "../img/"
 
 canvas= Canvas(root, width=(8 * 45), height=(8 * 45))
