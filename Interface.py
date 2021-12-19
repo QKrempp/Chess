@@ -18,8 +18,8 @@ movefile    = "data/moves.txt"
 imgfolder   = "img/"
 
 if(platform.system() == "Windows"):
-    import os
-    os.chdir('win/')
+    #import os
+    #os.chdir('win/')
     exefile = "Chess.exe"
     imgfolder = "../img/"
 
