@@ -7,15 +7,24 @@ col = []
 pcs = []
 mvs = []
 css = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7}
-x_selected = 0;
-y_selected = 0;
-selected = 0;
-exefile = "./Chess.xpp"
+x_selected  = 0;
+y_selected  = 0;
+selected    = 0;
+
+exefile     = "./Chess.xpp"
+gamefile    = "data/game.txt"
+boardfile   = "data/board.txt"
+movefile    = "data/moves.txt"
+imgfolder   = "img/"
 
 if(platform.system() == "Windows"):
     import os
-    exefile = "win/Chess.exe"
     os.chdir('win/')
+    exefile = "Chess.exe"
+    gamefile = "../data/game.txt"
+    boardfile = "../data/board.txt"
+    movefile = "../data/moves.txt"
+    imgfolder = "../img/"
 
 canvas= Canvas(root, width=(8 * 45), height=(8 * 45))
 
@@ -25,7 +34,7 @@ def reset_color():
     col = [[("#ffce9e", "#d18b47")[(i + j) % 2] for j in range(8)] for i in range(8)]
 
 def show_last_move():
-    f = open("data/game.txt", "r")
+    f = open(gamefile, "r")
     tmp = f.readlines()
     last_mv = tmp[-1]
     f.close()
@@ -42,13 +51,13 @@ def show_last_move():
 def create_pieces():
     global pcs
     pcs = []
-    board = open("data/board.txt", "r")
+    board = open(boardfile, "r")
     pieces = {1:'plt', 2:'rlt', 3:'nlt', 4:'blt', 5:'qlt', 6:'klt', 9:'pdt', 10:'rdt', 11:'ndt', 12:'bdt', 13:'qdt', 14:'kdt'}
     for i in range(8):
         for j in range(8):
             p = int(board.readline())
             if p != 0:
-                pcs.append((PhotoImage(file='img/'+pieces[p]+'.png'), i, j))
+                pcs.append((PhotoImage(file=imgfolder+pieces[p]+'.png'), i, j))
             else:
                 pcs.append((0, i, j))
     board.close()
@@ -56,7 +65,7 @@ def create_pieces():
 def create_moves():
     global mvs
     mvs = [[[] for j in range(8)] for i in range(8)]
-    moves = open("data/moves.txt", "r")
+    moves = open(movefile, "r")
     indice = 0
     for i in range(8):
         for j in range(8):
@@ -96,7 +105,7 @@ def callback(event):
         x_click = event.x // 45
         y_click = event.y // 45
         if((x_click, y_click) in mvs[x_selected][y_selected]):
-            f = open("data/game.txt", "a")
+            f = open(gamefile, "a")
             f.write("abcdefgh"[y_selected] + str(x_selected + 1) + "abcdefgh"[x_click] + str(y_click + 1) + "\n")
             f.close()
             subprocess.run([exefile, "-u"])
@@ -121,7 +130,7 @@ def callback(event):
             draw_pieces()
             selected = 0
 
-f = open("data/game.txt", "w")
+f = open(gamefile, "w")
 f.write("")
 f.close()
 subprocess.run([exefile, "-u"])
