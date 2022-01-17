@@ -77,7 +77,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
     calculated[depth]++;
     for(byte i = 0; i < 64; i++)
     {
-        std::cout << (int) i << "/64" << std::endl;
+        std::cout << "#";
         byte p = b->getPiece(i);
         if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
         {
@@ -102,6 +102,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
             }
         }
     }
+    std::cout << std::endl;
     for(byte i = 0; i < 8; i++)
     {
         std::cout << calculated[i] << ' ';
