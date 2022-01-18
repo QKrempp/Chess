@@ -150,7 +150,7 @@ byte Arbitre::movePiece(Board* b, move m)
     return EXIT_SUCCESS;
 }
 
-void Arbitre::manageThreats(Board* b, move m)
+void Arbitre::manageThreats(Board* b, move m, byte d)
  {
     uint64_t casesToCheck = 0;
 
@@ -201,6 +201,12 @@ void Arbitre::manageThreats(Board* b, move m)
         }
     }
 
+    if(d)
+    {
+        std::cout << "Avant désactivation des menaces" << std::endl << *b << std::endl;
+        printMoves(b);
+    }
+
     byte wk = IS_TARGET(casesToCheck, b->kings[WHITE]);
     byte bk = IS_TARGET(casesToCheck, b->kings[BLACK]);
     if(wk || bk)
@@ -224,6 +230,12 @@ void Arbitre::manageThreats(Board* b, move m)
         {
             updateThreat(b, i);
         }
+    }
+
+    if(d)
+    {
+        std::cout << "Après désactivation des menaces" << std::endl << *b << std::endl;
+        printMoves(b);
     }
 
     // Jeu de la pièce
@@ -265,9 +277,32 @@ void Arbitre::manageThreats(Board* b, move m)
         threatKing(b, b->kings[WHITE], MOVES_ONLY);
         threatKing(b, b->kings[BLACK], MOVES_ONLY);
     }
+
+    uint64_t bk_moves = b->getAltThreats(MOVE_STOP(m), WHITE) & b->getAltMoves(b->kings[BLACK], BLACK);
+    if(bk_moves)
+    {
+        for(byte i = 0; i < 64; i++)
+        {
+            b->moves[BLACK][i] ^= ((uint64_t) IS_TARGET(bk_moves, i)) << b->kings[BLACK];
+        }
+    }
+    uint64_t wk_moves = b->getAltThreats(MOVE_STOP(m), BLACK) & b->getAltMoves(b->kings[WHITE], WHITE);
+    if(wk_moves)
+    {
+        for(byte i = 0; i < 64; i++)
+        {
+            b->moves[WHITE][i] ^= ((uint64_t) IS_TARGET(wk_moves, i)) << b->kings[WHITE];
+        }
+    }
+
+    if(d)
+    {
+        std::cout << "Après réactivation des menaces" << std::endl << *b << std::endl;
+        printMoves(b);
+    }
 }
 
-byte Arbitre::moveRequest(Board* b, move m)
+byte Arbitre::moveRequest(Board* b, move m, byte d)
 {
 //     updateHash(b, m);
     if(GET_LINE(MOVE_STOP(m)) == 0 || GET_LINE(MOVE_STOP(m)) == 7)
@@ -311,32 +346,32 @@ byte Arbitre::moveRequest(Board* b, move m)
                     b->castling[BLACK][KSIDE_CASTLING] = 0;
                     break;
             }
-            manageThreats(b, m);
+            manageThreats(b, m, d);
             break;
         case OPT_CASTLING:
             switch(MOVE_STOP(m))
             {
                 case(02):
-                    manageThreats(b, 03);       // Déplacement de la tour queenside
-                    manageThreats(b, m);
+                    manageThreats(b, 03, d);       // Déplacement de la tour queenside
+                    manageThreats(b, m, d);
                     b->castling[WHITE][QSIDE_CASTLING] = 0;
                     b->castling[WHITE][KSIDE_CASTLING] = 0;
                     break;
                 case(06):
-                    manageThreats(b, 0705);     // Déplacement de la tour kingside
-                    manageThreats(b, m);
+                    manageThreats(b, 0705, d);     // Déplacement de la tour kingside
+                    manageThreats(b, m, d);
                     b->castling[WHITE][QSIDE_CASTLING] = 0;
                     b->castling[WHITE][KSIDE_CASTLING] = 0;
                     break;
                 case(072):
-                    manageThreats(b, 07073);    // Déplacement de la tour queenside
-                    manageThreats(b, m);
+                    manageThreats(b, 07073, d);    // Déplacement de la tour queenside
+                    manageThreats(b, m, d);
                     b->castling[BLACK][QSIDE_CASTLING] = 0;
                     b->castling[BLACK][KSIDE_CASTLING] = 0;
                     break;
                 case(076):
-                    manageThreats(b, 07775);    // Déplacement de la tour kingside
-                    manageThreats(b, m);
+                    manageThreats(b, 07775, d);    // Déplacement de la tour kingside
+                    manageThreats(b, m, d);
                     b->castling[BLACK][QSIDE_CASTLING] = 0;
                     b->castling[BLACK][KSIDE_CASTLING] = 0;
                     break;
@@ -345,7 +380,7 @@ byte Arbitre::moveRequest(Board* b, move m)
             }
             break;
         case OPT_PROMOTION:
-            manageThreats(b, m);
+            manageThreats(b, m, d);
             break;
         default:
             return EXIT_ERROR;

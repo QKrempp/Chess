@@ -102,6 +102,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
             }
         }
     }
+    std::cout << std::endl;
     for(byte i = 0; i < 8; i++)
     {
         std::cout << calculated[i] << ' ';

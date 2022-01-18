@@ -7,6 +7,8 @@
 #define THREATS_ONLY    1
 #define MOVES_ONLY      2
 
+#define DEBUG           1
+
 #include "Board.hpp"
 class Board;
 
@@ -37,7 +39,7 @@ private:
     void swapThreat(Board* b, move m);
     void swapMove(Board* b, move m);
     void updateThreat(Board* b, byte c);
-    void manageThreats(Board* b, move m);
+    void manageThreats(Board* b, move m, byte d = 0);
 
 public:
     Arbitre(Player* p1, Player* p2);
@@ -49,7 +51,7 @@ public:
     void updateHash(Board* b, move m);
     byte addHash(Board* b);
 
-    byte moveRequest(Board* b, move m);
+    byte moveRequest(Board* b, move m, byte d = 0);
     byte playRequest(Board* b, move m);
 
     byte isCheck(Board* b, byte color);
