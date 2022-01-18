@@ -5,12 +5,12 @@
 #include <iostream>
 #include <fstream>
 
-byte inpute_mode = 0;
-byte play_once = 0;
-byte get_moves = 0;
-byte get_board = 0;
-byte update = 0;
-byte cli_mode = 0;
+byte inpute_mode    = 0;
+byte play_once      = 0;
+byte get_moves      = 0;
+byte get_board      = 0;
+byte update         = 0;
+byte cli_mode       = 0;
 
 const char* game_f_name = "data/game.txt";
 
