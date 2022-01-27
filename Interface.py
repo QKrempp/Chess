@@ -42,8 +42,8 @@ def show_last_move():
     elif last_mv == 'W':
         pass
     else:
-        col[css[last_mv[0]]][int(last_mv[1]) - 1] = ["#ff9ea0", "#d14b47"][(css[last_mv[0]] + int(last_mv[1]) - 1) % 2]
-        col[css[last_mv[2]]][int(last_mv[3]) - 1] = ["#ff9ea0", "#d14b47"][(css[last_mv[2]] + int(last_mv[3]) - 1) % 2]
+        col[css[last_mv[0]]][7 - (int(last_mv[1]) - 1)] = ["#ff9ea0", "#d14b47"][(css[last_mv[0]] + int(last_mv[1])) % 2]
+        col[css[last_mv[2]]][7 - (int(last_mv[3]) - 1)] = ["#ff9ea0", "#d14b47"][(css[last_mv[2]] + int(last_mv[3])) % 2]
 
 def create_pieces():
     global pcs
@@ -54,9 +54,9 @@ def create_pieces():
         for j in range(8):
             p = int(board.readline())
             if p != 0:
-                pcs.append((PhotoImage(file=imgfolder+pieces[p]+'.png'), i, j))
+                pcs.append((PhotoImage(file=imgfolder+pieces[p]+'.png'), 7 - i, j))
             else:
-                pcs.append((0, i, j))
+                pcs.append((0, 7 - i, j))
     board.close()
 
 def create_moves():
@@ -75,7 +75,7 @@ def create_moves():
 
 def draw_moves(x, y):
     for t in mvs[x][y]:
-        col[t[0]][t[1]] = [["#9ed3ff", "#47abd1"][(t[0] + t[1]) % 2]]
+        col[t[0]][7 - t[1]] = [["#9ed3ff", "#47abd1"][(t[0] + t[1] + 1) % 2]]
 
 def draw_pieces():
     for p in pcs:
@@ -92,7 +92,7 @@ def callback(event):
     global x_selected
     global y_selected
     if(not selected):
-        x_selected = event.y // 45
+        x_selected = 7 - event.y // 45
         y_selected = event.x // 45
         draw_moves(x_selected, y_selected)
         draw_board()
@@ -100,7 +100,7 @@ def callback(event):
         selected = 1
     else:
         x_click = event.x // 45
-        y_click = event.y // 45
+        y_click = 7 - event.y // 45
         if((x_click, y_click) in mvs[x_selected][y_selected]):
             f = open(gamefile, "a")
             f.write("abcdefgh"[y_selected] + str(x_selected + 1) + "abcdefgh"[x_click] + str(y_click + 1) + "\n")
