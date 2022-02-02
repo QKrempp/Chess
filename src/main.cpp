@@ -45,14 +45,6 @@ int main(int argc, char* argv[])
             std::string s;
             while(getline(game_f, s))
             {
-                if(!b.getPlayer())
-                {
-                    std::cout << "Tour de Blanc" << std::endl;
-                }
-                else
-                {
-                    std::cout << "Tour de Noir" << std::endl;
-                }
                 a.playRequest(&b, STR_TO_MOVE(s));
                 b.nextTurn();
             }

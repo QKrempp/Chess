@@ -77,7 +77,7 @@ move AlphaBeta::play(Board* b, Arbitre* a)
     calculated[depth]++;
     for(byte i = 0; i < 64; i++)
     {
-        std::cout << "#";
+        std::cout << (int) i << "/64" << std::endl;
         byte p = b->getPiece(i);
         if(PIECE_COLOR(p) == color && PIECE_TYPE(p) != EMPTY)
         {
@@ -220,19 +220,19 @@ int AlphaBeta::evaluateBoard(Board* b){
         }
         switch(PIECE_TYPE(b->getPiece(i))){
             case PAWN:
-                points = 1000 + pieces_sqv[0][c];
+                points = 100 + pieces_sqv[0][c];
                 break;
             case ROOK:
-                points = 5000 + pieces_sqv[1][c];
+                points = 500 + pieces_sqv[1][c];
                 break;
             case KNIGHT:
-                points = 3200 + pieces_sqv[2][c];
+                points = 320 + pieces_sqv[2][c];
                 break;
             case BISHOP:
-                points = 3300 + pieces_sqv[3][c];
+                points = 330 + pieces_sqv[3][c];
                 break;
             case QUEEN:
-                points = 9000 + pieces_sqv[4][c];
+                points = 900 + pieces_sqv[4][c];
                 break;
             case KING:
                 points = 200000 + pieces_sqv[5][c];
