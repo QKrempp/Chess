@@ -1,4 +1,5 @@
 build/
+mxe/
 Chess.old
 *.kdev4
 .status
