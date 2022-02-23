@@ -1,5 +1,6 @@
 build/
 mxe/
+Makefile
 Chess.old
 *.kdev4
 .status
