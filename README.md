@@ -38,3 +38,7 @@ Plutôt basique, elle évalue un board de la façon suivante :
  - Changer le comportement en fin de partie pour mettre en échec
  - Paralléliser le code avec OpenMP
  - Implémenter un MCTS
+
+## Credits
+
+Merci à Cburnett pour les fichiers ```svg``` des pièces, sous licence _[Creative Commons](https://creativecommons.org/licenses/by-sa/3.0/)_
