@@ -1,4 +1,4 @@
-#include "Arbitre.hpp"
+#include "Arbitre.h"
 
 
 Arbitre::Arbitre(Player* p1, Player* p2)
@@ -81,7 +81,7 @@ void Arbitre::initHash(Board* b)
 //     b->h = hash;
 // }
 
-void Arbitre::updateHash(Board* b, move m)
+void Arbitre::updateHash(Board* b, b_move m)
 {
     byte start = MOVE_START(m);
     byte stop = MOVE_STOP(m);
@@ -128,7 +128,7 @@ byte Arbitre::addHash(Board* b)
 // Fonctions de déplacement
 // --------------------------------
 
-byte Arbitre::movePiece(Board* b, move m)
+byte Arbitre::movePiece(Board* b, b_move m)
 {
     if(PIECE_TYPE(b->pieces[MOVE_STOP(m)]) == EMPTY)
     {
@@ -150,7 +150,7 @@ byte Arbitre::movePiece(Board* b, move m)
     return EXIT_SUCCESS;
 }
 
-void Arbitre::manageThreats(Board* b, move m, byte d)
+void Arbitre::manageThreats(Board* b, b_move m, byte d)
  {
     uint64_t casesToCheck = 0;
 
@@ -302,7 +302,7 @@ void Arbitre::manageThreats(Board* b, move m, byte d)
     }
 }
 
-byte Arbitre::moveRequest(Board* b, move m, byte d)
+byte Arbitre::moveRequest(Board* b, b_move m, byte d)
 {
 //     updateHash(b, m);
     if(GET_LINE(MOVE_STOP(m)) == 0 || GET_LINE(MOVE_STOP(m)) == 7)
@@ -389,7 +389,7 @@ byte Arbitre::moveRequest(Board* b, move m, byte d)
     return EXIT_SUCCESS;
 }
 
-byte Arbitre::playRequest(Board* b, move m)
+byte Arbitre::playRequest(Board* b, b_move m)
 {
     updateHash(b, m);
     moveRequest(b, m);
@@ -476,7 +476,7 @@ byte Arbitre::isCheck(Board* b, byte color)
     }
 }
 
-byte Arbitre::isMoveValid(Board* b, move m)
+byte Arbitre::isMoveValid(Board* b, b_move m)
 {
     Board b0 = *b;
     byte color = PIECE_COLOR(b0.pieces[MOVE_START(m)]);
@@ -584,13 +584,13 @@ void Arbitre::updateThreat(Board* b, byte c)
 }
 
 
-void Arbitre::swapMove(Board* b, move m)
+void Arbitre::swapMove(Board* b, b_move m)
 {
     byte color = PIECE_COLOR(b->pieces[MOVE_START(m)]);
     b->moves[color][MOVE_STOP(m)] ^= (UINT64_C(1) << MOVE_START(m));
 }
 
-void Arbitre::swapThreat(Board* b, move m)
+void Arbitre::swapThreat(Board* b, b_move m)
 {
     byte color = PIECE_COLOR(b->pieces[MOVE_START(m)]);
     b->threats[color][MOVE_STOP(m)] ^= (UINT64_C(1) << MOVE_START(m));
@@ -1150,7 +1150,7 @@ void decToOct(long i)
     std::cout << d;
 }
 
-void printMove(move m)
+void printMove(b_move m)
 {
     std::string s = std::string("    ");
     s[2] = (char) (m & 07) + 'a';
@@ -1160,7 +1160,7 @@ void printMove(move m)
     std::cout << s;
 }
 
-void moveToFile(move m, const char* fn)
+void moveToFile(b_move m, const char* fn)
 {
     std::ofstream f;
     f.open(fn, std::ios::app);

@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "Player.h"
 
 Player::Player(Board* b, byte c)
 {
@@ -17,7 +17,7 @@ Player::Player(Board* b, byte c)
 }
 
 
-move Human::play(Board* b, Arbitre* a)
+b_move Human::play(Board* b, Arbitre* a)
 {
     std::cout << *b << std::endl;
     for(byte i = 0; i < pieces_nb; i++)
@@ -30,7 +30,7 @@ move Human::play(Board* b, Arbitre* a)
         }
     }
     byte l = 0;
-    move ml[100];
+    b_move ml[100];
     for(byte i = 0; i < pieces_nb; i++)
     {
         uint64_t mv = b->getAltMoves(pieces[i], color);
@@ -56,7 +56,7 @@ move Human::play(Board* b, Arbitre* a)
     l = 0;
     for(int i = 0; i < (int) s.size(); i++)
     {
-        l = (move)(s[i] - '0') + 10 * l;
+        l = (b_move)(s[i] - '0') + 10 * l;
     }
     byte i = 0;
     while(pieces[i] != MOVE_START(ml[l]) && i < pieces_nb)
@@ -68,9 +68,10 @@ move Human::play(Board* b, Arbitre* a)
     return ml[l];
 }
 
-move AlphaBeta::play(Board* b, Arbitre* a)
+b_move AlphaBeta::play(Board* b, Arbitre* a)
 {
-    move bestMove = 0;
+    std::cout << "Je joue!" << std::endl;
+    b_move bestMove = 0;
     int bestScore = -__INT_MAX__;
     int alpha = -__INT_MAX__;
     int beta = __INT_MAX__;
@@ -136,8 +137,6 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int alpha, int beta){
                             v = ab;
                         }
                         if(alpha >= v){
-                            // Coupure alpha
-//                             std::cout << "Coupure alpha (" << alpha << ", " << beta << ", " << v << ")" << std::endl;
                             return v;
                         }
                         if(v < beta){
@@ -179,21 +178,6 @@ int AlphaBeta::digDown(Board* b, Arbitre* a, int depth, int alpha, int beta){
     }
     return v;
 }
-
-// fonction alphabeta(nœud, i)
-//          /* i représente la valeur minimale du résultat attendu.
-//          Si on s'aperçoit que le résultat sera inférieur à i, autant renvoyer directement la valeur en cours (inférieure à i)
-//          et ne pas perdre de temps à calculer la vraie valeur du nœud qui sera, de toute façon, inférieure à i également.
-//          À l'initialisation, on prendra i = -∞ */
-//    si nœud est une feuille alors
-//        retourner la valeur de nœud
-//    sinon
-//        j = -∞
-//        pour tout fils de nœud faire
-//            j = max(j, alphabeta(fils, j))
-//            si -j ⩽ i alors
-//                retourner -j
-//        retourner -j
 
 
 int AlphaBeta::evaluateBoard(Board* b){
